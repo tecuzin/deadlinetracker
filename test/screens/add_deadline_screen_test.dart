@@ -178,7 +178,9 @@ void main() {
       final descriptionFieldFinder =
           find.widgetWithText(TextFormField, 'Enter deadline description');
       final textFieldFinder = find.descendant(
-          of: descriptionFieldFinder, matching: find.byType(TextField));
+        of: descriptionFieldFinder,
+        matching: find.byType(TextField),
+      );
       final textField = tester.widget<TextField>(textFieldFinder);
 
       expect(textField.maxLines, 3);
