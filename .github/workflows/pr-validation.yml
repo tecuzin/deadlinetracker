@@ -1,0 +1,149 @@
+name: PR Validation
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  validate:
+    name: Validate PR
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.0'
+          channel: 'stable'
+      
+      - name: Get dependencies
+        run: flutter pub get
+      
+      - name: Check formatting
+        run: |
+          if ! dart format --set-exit-if-changed .; then
+            echo "❌ Code formatting issues found!"
+            echo "Please run 'dart format .' to fix formatting issues."
+            exit 1
+          fi
+      
+      - name: Run linter
+        run: |
+          if ! flutter analyze; then
+            echo "❌ Linter errors found!"
+            exit 1
+          fi
+      
+      - name: Run unit tests
+        run: |
+          if ! flutter test; then
+            echo "❌ Unit tests failed!"
+            exit 1
+          fi
+      
+      - name: Run integration tests
+        run: |
+          if ! flutter test test/integration; then
+            echo "❌ Integration tests failed!"
+            exit 1
+          fi
+      
+      - name: Check test coverage
+        run: |
+          flutter test --coverage
+          if [ ! -f coverage/lcov.info ]; then
+            echo "❌ Coverage report not generated!"
+            exit 1
+          fi
+      
+      - name: Post PR Comment
+        if: always()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            let comment = '## PR Validation Results\n\n';
+            
+            if (process.env.VALIDATION_SUCCESS === 'true') {
+              comment += '✅ **All validation checks passed!**\n\n';
+              comment += '- ✅ Code formatting\n';
+              comment += '- ✅ Linter checks\n';
+              comment += '- ✅ Unit tests\n';
+              comment += '- ✅ Integration tests\n';
+              comment += '- ✅ Test coverage\n';
+            } else {
+              comment += '❌ **Some validation checks failed.**\n\n';
+              comment += 'Please review the workflow logs for details.\n';
+            }
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+        env:
+          VALIDATION_SUCCESS: ${{ job.status == 'success' }}
+
+  pr-checks:
+    name: PR Quality Checks
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check PR title
+        uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            docs
+            style
+            refactor
+            perf
+            test
+            build
+            ci
+            chore
+            revert
+      
+      - name: Check PR size
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const additions = pr.additions;
+            const deletions = pr.deletions;
+            const totalChanges = additions + deletions;
+            
+            if (totalChanges > 500) {
+              core.warning(`This PR has ${totalChanges} changes. Consider breaking it into smaller PRs.`);
+            }
+      
+      - name: Check for TODO comments
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+            });
+            
+            let todoFound = false;
+            for (const file of files) {
+              if (file.patch && file.patch.includes('TODO')) {
+                todoFound = true;
+                core.warning(`TODO comment found in ${file.filename}`);
+              }
+            }
+            
+            if (todoFound) {
+              core.info('TODO comments found. Please ensure they are documented in the issue tracker.');
+            }

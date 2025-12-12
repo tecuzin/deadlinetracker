@@ -1,5 +1,9 @@
 # Deadline Tracker
 
+![CI](https://github.com/YOUR_USERNAME/deadline-tracker/workflows/CI/badge.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Flutter](https://img.shields.io/badge/Flutter-3.16.0-blue.svg)](https://flutter.dev/)
+
 A beautiful Flutter application to help you track and manage deadlines with real-time countdown.
 
 ## Features
@@ -45,7 +49,14 @@ The app displays:
    flutter pub get
    ```
 
-3. **Run the application**:
+3. **Run tests** (recommended before running the app):
+   ```bash
+   ./test_runner.sh
+   # or
+   flutter test
+   ```
+
+4. **Run the application**:
    
    For Android/iOS:
    ```bash
@@ -108,11 +119,114 @@ lib/
    - Click the delete icon (trash can) in the Actions column
    - Confirm the deletion in the dialog
 
+## Testing
+
+This project includes comprehensive testing at multiple levels:
+
+### Test Structure
+
+```
+test/
+├── models/                    # Unit tests for data models
+│   └── deadline_test.dart
+├── providers/                 # Unit tests for state management
+│   └── deadline_provider_test.dart
+├── screens/                   # Widget tests for UI components
+│   ├── home_screen_test.dart
+│   ├── add_deadline_screen_test.dart
+│   └── statistics_screen_test.dart
+└── integration/               # Integration tests
+    └── app_integration_test.dart
+
+integration_test/
+└── app_test.dart             # End-to-end tests
+```
+
+### Running Tests
+
+**Run all tests:**
+```bash
+flutter test
+```
+
+**Run specific test suites:**
+```bash
+# Unit tests only
+flutter test test/models test/providers
+
+# Widget tests only
+flutter test test/screens
+
+# Integration tests
+flutter test test/integration
+
+# E2E tests
+flutter test integration_test
+```
+
+**Run tests with coverage:**
+```bash
+flutter test --coverage
+```
+
+**Use the test runner script (recommended):**
+```bash
+./test_runner.sh
+```
+
+This script will:
+- Run code formatting checks
+- Run static analysis
+- Execute all test suites
+- Generate coverage reports
+- Display results with colored output
+
+### Test Coverage
+
+The project aims for high test coverage across:
+- **Unit Tests**: Models and business logic (Deadline, DeadlineProvider)
+- **Widget Tests**: All screens and UI components
+- **Integration Tests**: Complete user workflows
+- **E2E Tests**: Real device/simulator testing
+
+### Continuous Integration
+
+All tests are automatically run on every pull request via GitHub Actions:
+- Code formatting validation
+- Static analysis (flutter analyze)
+- Unit tests
+- Integration tests
+- Build verification
+- Code coverage reporting
+
+Tests must pass before PRs can be merged.
+
+## Linting
+
+This project uses strict linting rules defined in `analysis_options.yaml`.
+
+**Run linter:**
+```bash
+flutter analyze
+```
+
+**Format code:**
+```bash
+dart format .
+```
+
+The linter enforces:
+- Type safety
+- Code style consistency
+- Best practices
+- Flutter-specific guidelines
+
 ## Dependencies
 
 - **flutter**: SDK for building the app
 - **provider**: State management solution
 - **intl**: Internationalization and date formatting
+- **integration_test**: E2E testing framework
 
 ## Technologies Used
 
@@ -120,6 +234,29 @@ lib/
 - **Dart**: Programming language
 - **Material Design 3**: Modern UI design system
 - **Provider Pattern**: For state management
+- **GitHub Actions**: CI/CD pipeline
+- **Flutter Test**: Testing framework
+
+## Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+### Quick Start for Contributors
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests: `./test_runner.sh`
+5. Submit a pull request
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
+
+## Documentation
+
+- [Testing Guide](TESTING.md) - Comprehensive testing documentation
+- [Contributing Guide](CONTRIBUTING.md) - How to contribute
+- [Quick Reference](QUICK_REFERENCE.md) - Common commands and workflows
+- [Changelog](CHANGELOG.md) - Version history
 
 ## Future Enhancements
 
@@ -138,3 +275,9 @@ Potential features for future versions:
 ## License
 
 This project is open source and available for educational purposes.
+
+## Acknowledgments
+
+- Flutter team for the amazing framework
+- Contributors who help improve this project
+- The open-source community

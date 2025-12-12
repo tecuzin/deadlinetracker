@@ -1,0 +1,76 @@
+name: Test Coverage
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  coverage:
+    name: Generate Coverage Report
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.0'
+          channel: 'stable'
+      
+      - name: Get dependencies
+        run: flutter pub get
+      
+      - name: Run tests with coverage
+        run: flutter test --coverage
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+      
+      - name: Generate coverage report
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lcov
+          genhtml coverage/lcov.info -o coverage/html
+      
+      - name: Upload coverage HTML
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage/html
+      
+      - name: Comment coverage on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            
+            let coverage = 'N/A';
+            try {
+              const { execSync } = require('child_process');
+              const output = execSync('lcov --summary coverage/lcov.info 2>&1 || true').toString();
+              const match = output.match(/lines\.*:\s*([\d.]+)%/);
+              if (match) coverage = match[1] + '%';
+            } catch (e) {
+              console.log('Could not parse coverage');
+            }
+            
+            const comment = `## 📊 Test Coverage Report\n\n` +
+              `**Coverage:** ${coverage}\n\n` +
+              `[View detailed coverage report in artifacts](${context.payload.pull_request.html_url}/checks)`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });

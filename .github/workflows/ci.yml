@@ -1,0 +1,178 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  analyze:
+    name: Analyze Code
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.0'
+          channel: 'stable'
+      
+      - name: Get dependencies
+        run: flutter pub get
+      
+      - name: Verify formatting
+        run: dart format --set-exit-if-changed .
+      
+      - name: Run analyzer
+        run: flutter analyze
+      
+      - name: Check for outdated dependencies
+        run: flutter pub outdated
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    needs: analyze
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.0'
+          channel: 'stable'
+      
+      - name: Get dependencies
+        run: flutter pub get
+      
+      - name: Run unit tests
+        run: flutter test --coverage
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/lcov.info
+          fail_ci_if_error: false
+      
+      - name: Check test coverage
+        run: |
+          dart pub global activate coverage
+          dart pub global run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --report-on=lib
+          if [ -f coverage/lcov.info ]; then
+            echo "Coverage report generated successfully"
+          else
+            echo "Failed to generate coverage report"
+            exit 1
+          fi
+
+  integration-test:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.0'
+          channel: 'stable'
+      
+      - name: Get dependencies
+        run: flutter pub get
+      
+      - name: Run integration tests
+        run: flutter test test/integration
+
+  build:
+    name: Build Application
+    runs-on: ubuntu-latest
+    needs: [analyze, test]
+    
+    strategy:
+      matrix:
+        platform: [web, apk]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.0'
+          channel: 'stable'
+      
+      - name: Get dependencies
+        run: flutter pub get
+      
+      - name: Build for Web
+        if: matrix.platform == 'web'
+        run: flutter build web --release
+      
+      - name: Build APK
+        if: matrix.platform == 'apk'
+        run: flutter build apk --release
+      
+      - name: Upload Build Artifacts (Web)
+        if: matrix.platform == 'web'
+        uses: actions/upload-artifact@v3
+        with:
+          name: web-build
+          path: build/web
+      
+      - name: Upload Build Artifacts (APK)
+        if: matrix.platform == 'apk'
+        uses: actions/upload-artifact@v3
+        with:
+          name: apk-build
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+  quality-gate:
+    name: Quality Gate
+    runs-on: ubuntu-latest
+    needs: [analyze, test, integration-test]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.0'
+          channel: 'stable'
+      
+      - name: Get dependencies
+        run: flutter pub get
+      
+      - name: Run all quality checks
+        run: |
+          echo "Running comprehensive quality checks..."
+          flutter analyze --fatal-infos
+          flutter test
+          echo "All quality checks passed!"
+      
+      - name: Post success comment
+        if: success() && github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '✅ All quality checks passed! The code is ready for review.'
+            })
