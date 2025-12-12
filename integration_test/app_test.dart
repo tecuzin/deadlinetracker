@@ -67,7 +67,7 @@ void main() {
       // Verify delete confirmation dialog
       expect(find.text('Delete Deadline'), findsOneWidget);
       expect(find.text('Are you sure you want to delete "E2E Test Deadline"?'),
-          findsOneWidget);
+          findsOneWidget,);
 
       // Confirm deletion
       await tester.tap(find.text('Delete'));

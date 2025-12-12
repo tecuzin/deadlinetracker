@@ -66,14 +66,14 @@ void main() {
         description: 'Test',
         dueDate: now.add(const Duration(days: 1)),
         createdAt: now,
-      ));
+      ),);
       provider.addDeadline(Deadline(
         id: '2',
         title: 'Test 2',
         description: 'Test',
         dueDate: now.add(const Duration(days: 2)),
         createdAt: now,
-      ));
+      ),);
 
       await tester.pumpWidget(createTestWidget());
 
@@ -87,7 +87,7 @@ void main() {
         description: 'Test',
         dueDate: now.add(const Duration(days: 1)),
         createdAt: now,
-      ));
+      ),);
 
       await tester.pumpWidget(createTestWidget());
 
@@ -101,7 +101,7 @@ void main() {
         description: 'Test',
         dueDate: now.subtract(const Duration(days: 1)),
         createdAt: now,
-      ));
+      ),);
 
       await tester.pumpWidget(createTestWidget());
 
@@ -122,7 +122,7 @@ void main() {
         description: 'Test',
         dueDate: now.add(const Duration(days: 1)),
         createdAt: now,
-      ));
+      ),);
 
       await tester.pumpWidget(createTestWidget());
 
@@ -144,7 +144,7 @@ void main() {
         description: 'Test',
         dueDate: now.add(const Duration(days: 1)),
         createdAt: now,
-      ));
+      ),);
 
       await tester.pumpWidget(createTestWidget());
 
@@ -167,7 +167,7 @@ void main() {
         description: 'Test',
         dueDate: now.add(const Duration(days: 2)),
         createdAt: now,
-      ));
+      ),);
 
       await tester.pumpWidget(createTestWidget());
 
@@ -189,7 +189,7 @@ void main() {
         description: 'Test',
         dueDate: now.add(const Duration(days: 30)),
         createdAt: now,
-      ));
+      ),);
 
       await tester.pumpWidget(createTestWidget());
 
@@ -204,7 +204,7 @@ void main() {
         description: 'Test',
         dueDate: now.add(const Duration(days: 1)),
         createdAt: now.subtract(const Duration(days: 1)),
-      ));
+      ),);
 
       await tester.pumpWidget(createTestWidget());
 
@@ -225,7 +225,7 @@ void main() {
         description: 'Test',
         dueDate: now.add(const Duration(hours: 12)),
         createdAt: now,
-      ));
+      ),);
 
       // Add non-critical deadline
       provider.addDeadline(Deadline(
@@ -234,7 +234,7 @@ void main() {
         description: 'Test',
         dueDate: now.add(const Duration(days: 5)),
         createdAt: now,
-      ));
+      ),);
 
       await tester.pumpWidget(createTestWidget());
 
@@ -255,7 +255,7 @@ void main() {
         description: 'Test',
         dueDate: now.add(const Duration(days: 1)),
         createdAt: now,
-      ));
+      ),);
 
       await tester.pumpWidget(createTestWidget());
 
@@ -276,14 +276,14 @@ void main() {
         description: 'Test',
         dueDate: now.add(const Duration(days: 1)),
         createdAt: now,
-      ));
+      ),);
       provider.addDeadline(Deadline(
         id: '2',
         title: 'Overdue',
         description: 'Test',
         dueDate: now.subtract(const Duration(days: 1)),
         createdAt: now,
-      ));
+      ),);
 
       await tester.pumpWidget(createTestWidget());
 
@@ -299,7 +299,7 @@ void main() {
           description: 'Test',
           dueDate: now.add(Duration(days: i)),
           createdAt: now,
-        ));
+        ),);
       }
 
       await tester.pumpWidget(createTestWidget());
@@ -324,7 +324,7 @@ void main() {
         description: 'Test',
         dueDate: now.add(const Duration(days: 1)),
         createdAt: now,
-      ));
+      ),);
 
       await tester.pumpWidget(createTestWidget());
 
@@ -341,12 +341,12 @@ void main() {
         description: 'Test',
         dueDate: now.add(const Duration(days: 1)),
         createdAt: now,
-      ));
+      ),);
 
       await tester.pumpWidget(createTestWidget());
 
       expect(find.byType(Card),
-          findsAtLeastNWidgets(4)); // At least the 4 stat cards
+          findsAtLeastNWidgets(4),); // At least the 4 stat cards
     });
   });
 }

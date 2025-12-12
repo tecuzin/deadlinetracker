@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:provider/provider.dart';
 import 'package:deadline_tracker/main.dart';
-import 'package:deadline_tracker/providers/deadline_provider.dart';
-import 'package:deadline_tracker/models/deadline.dart';
 
 void main() {
   group('App Integration Tests', () {

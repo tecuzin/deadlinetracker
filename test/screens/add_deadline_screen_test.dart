@@ -40,7 +40,7 @@ void main() {
       await tester.pumpWidget(createTestWidget());
 
       expect(find.widgetWithText(TextFormField, 'Enter deadline title'),
-          findsOneWidget);
+          findsOneWidget,);
       expect(find.byIcon(Icons.title), findsOneWidget);
     });
 
@@ -48,7 +48,7 @@ void main() {
       await tester.pumpWidget(createTestWidget());
 
       expect(find.widgetWithText(TextFormField, 'Enter deadline description'),
-          findsOneWidget);
+          findsOneWidget,);
       expect(find.byIcon(Icons.description), findsOneWidget);
     });
 
@@ -70,7 +70,7 @@ void main() {
       await tester.pumpWidget(createTestWidget());
 
       expect(
-          find.widgetWithText(ElevatedButton, 'Save Deadline'), findsOneWidget);
+          find.widgetWithText(ElevatedButton, 'Save Deadline'), findsOneWidget,);
     });
 
     testWidgets('validates empty title field', (tester) async {
@@ -169,11 +169,13 @@ void main() {
     testWidgets('description field is multiline', (tester) async {
       await tester.pumpWidget(createTestWidget());
 
-      final descriptionField = tester.widget<TextFormField>(
-        find.widgetWithText(TextFormField, 'Enter deadline description'),
-      );
+      final descriptionFieldFinder =
+          find.widgetWithText(TextFormField, 'Enter deadline description');
+      final textFieldFinder =
+          find.descendant(of: descriptionFieldFinder, matching: find.byType(TextField));
+      final textField = tester.widget<TextField>(textFieldFinder);
 
-      expect(descriptionField.maxLines, 3);
+      expect(textField.maxLines, 3);
     });
 
     testWidgets('back button navigates back', (tester) async {
@@ -227,11 +229,11 @@ void main() {
       expect(
           deadline.createdAt
               .isAfter(beforeTime.subtract(const Duration(seconds: 1))),
-          true);
+          true,);
       expect(
           deadline.createdAt
               .isBefore(afterTime.add(const Duration(seconds: 1))),
-          true);
+          true,);
     });
 
     testWidgets('generates unique id for each deadline', (tester) async {

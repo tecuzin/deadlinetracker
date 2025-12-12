@@ -69,12 +69,12 @@ class StatisticsScreen extends StatelessWidget {
 
                 // Upcoming Deadlines
                 _buildUpcomingDeadlines(
-                    context, stats['upcomingDeadlines'] as List<Deadline>),
+                    context, stats['upcomingDeadlines'] as List<Deadline>,),
                 const SizedBox(height: 20),
 
                 // Recent Activity
                 _buildRecentActivity(
-                    context, stats['recentDeadlines'] as List<Deadline>),
+                    context, stats['recentDeadlines'] as List<Deadline>,),
               ],
             ),
           );
@@ -127,7 +127,7 @@ class StatisticsScreen extends StatelessWidget {
   }
 
   Widget _buildOverviewSection(
-      BuildContext context, Map<String, dynamic> stats) {
+      BuildContext context, Map<String, dynamic> stats,) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -225,7 +225,7 @@ class StatisticsScreen extends StatelessWidget {
   }
 
   Widget _buildStatusDistribution(
-      BuildContext context, Map<String, dynamic> stats) {
+      BuildContext context, Map<String, dynamic> stats,) {
     final total = stats['total'] as int;
     final active = stats['active'] as int;
     final overdue = stats['overdue'] as int;
@@ -404,7 +404,7 @@ class StatisticsScreen extends StatelessWidget {
   }
 
   Widget _buildUpcomingDeadlines(
-      BuildContext context, List<Deadline> deadlines) {
+      BuildContext context, List<Deadline> deadlines,) {
     if (deadlines.isEmpty) {
       return const SizedBox.shrink();
     }
@@ -419,7 +419,7 @@ class StatisticsScreen extends StatelessWidget {
             Row(
               children: [
                 Icon(Icons.upcoming,
-                    color: Theme.of(context).colorScheme.primary),
+                    color: Theme.of(context).colorScheme.primary,),
                 const SizedBox(width: 8),
                 Text(
                   'Upcoming (Next 7 Days)',
@@ -509,7 +509,7 @@ class StatisticsScreen extends StatelessWidget {
             Row(
               children: [
                 Icon(Icons.history,
-                    color: Theme.of(context).colorScheme.primary),
+                    color: Theme.of(context).colorScheme.primary,),
                 const SizedBox(width: 8),
                 Text(
                   'Recent Activity (Last 7 Days)',
@@ -529,7 +529,6 @@ class StatisticsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             ...deadlines.take(3).map((deadline) {
-              final dateFormat = DateFormat('MMM dd');
               final now = DateTime.now();
               final daysAgo = now.difference(deadline.createdAt).inDays;
 

@@ -57,7 +57,7 @@ void main() {
 
       expect(find.text('No deadlines yet'), findsOneWidget);
       expect(find.text('Tap the + button to add your first deadline'),
-          findsOneWidget);
+          findsOneWidget,);
       expect(find.byIcon(Icons.event_available), findsOneWidget);
     });
 
@@ -136,7 +136,7 @@ void main() {
       // Should show confirmation dialog
       expect(find.text('Delete Deadline'), findsOneWidget);
       expect(find.text('Are you sure you want to delete "Test Deadline"?'),
-          findsOneWidget);
+          findsOneWidget,);
       expect(find.text('Cancel'), findsOneWidget);
       expect(find.text('Delete'), findsOneWidget);
     });
