@@ -26,14 +26,14 @@ void main() {
 
     testWidgets('renders app bar with correct title', (tester) async {
       await tester.pumpWidget(createTestWidget());
-      
+
       expect(find.text('Statistics'), findsOneWidget);
       expect(find.byType(AppBar), findsOneWidget);
     });
 
     testWidgets('shows empty state when no deadlines exist', (tester) async {
       await tester.pumpWidget(createTestWidget());
-      
+
       expect(find.text('No statistics yet'), findsOneWidget);
       expect(find.text('Add some deadlines to see statistics'), findsOneWidget);
       expect(find.byIcon(Icons.bar_chart), findsOneWidget);
@@ -47,11 +47,11 @@ void main() {
         dueDate: now.add(const Duration(days: 1)),
         createdAt: now,
       );
-      
+
       provider.addDeadline(deadline);
-      
+
       await tester.pumpWidget(createTestWidget());
-      
+
       expect(find.text('Overview'), findsOneWidget);
       expect(find.text('Total'), findsOneWidget);
       expect(find.text('Active'), findsOneWidget);
@@ -74,9 +74,9 @@ void main() {
         dueDate: now.add(const Duration(days: 2)),
         createdAt: now,
       ));
-      
+
       await tester.pumpWidget(createTestWidget());
-      
+
       expect(find.text('2'), findsAtLeastNWidgets(1));
     });
 
@@ -88,9 +88,9 @@ void main() {
         dueDate: now.add(const Duration(days: 1)),
         createdAt: now,
       ));
-      
+
       await tester.pumpWidget(createTestWidget());
-      
+
       expect(find.text('1'), findsAtLeastNWidgets(1));
     });
 
@@ -102,16 +102,16 @@ void main() {
         dueDate: now.subtract(const Duration(days: 1)),
         createdAt: now,
       ));
-      
+
       await tester.pumpWidget(createTestWidget());
-      
+
       // Scroll to see overdue section
       await tester.dragUntilVisible(
         find.text('Overdue'),
         find.byType(SingleChildScrollView),
         const Offset(0, -100),
       );
-      
+
       expect(find.text('1'), findsAtLeastNWidgets(1));
     });
 
@@ -123,16 +123,16 @@ void main() {
         dueDate: now.add(const Duration(days: 1)),
         createdAt: now,
       ));
-      
+
       await tester.pumpWidget(createTestWidget());
-      
+
       // Scroll to status distribution
       await tester.dragUntilVisible(
         find.text('Status Distribution'),
         find.byType(SingleChildScrollView),
         const Offset(0, -100),
       );
-      
+
       expect(find.text('Status Distribution'), findsOneWidget);
       expect(find.byType(LinearProgressIndicator), findsNWidgets(2));
     });
@@ -145,21 +145,22 @@ void main() {
         dueDate: now.add(const Duration(days: 1)),
         createdAt: now,
       ));
-      
+
       await tester.pumpWidget(createTestWidget());
-      
+
       await tester.dragUntilVisible(
         find.text('Time Analysis'),
         find.byType(SingleChildScrollView),
         const Offset(0, -200),
       );
-      
+
       expect(find.text('Time Analysis'), findsOneWidget);
       expect(find.text('Avg. Time Left'), findsOneWidget);
       expect(find.text('Upcoming (7d)'), findsOneWidget);
     });
 
-    testWidgets('shows upcoming deadlines section when deadlines exist', (tester) async {
+    testWidgets('shows upcoming deadlines section when deadlines exist',
+        (tester) async {
       provider.addDeadline(Deadline(
         id: '1',
         title: 'Upcoming Test',
@@ -167,20 +168,21 @@ void main() {
         dueDate: now.add(const Duration(days: 2)),
         createdAt: now,
       ));
-      
+
       await tester.pumpWidget(createTestWidget());
-      
+
       await tester.dragUntilVisible(
         find.text('Upcoming (Next 7 Days)'),
         find.byType(SingleChildScrollView),
         const Offset(0, -300),
       );
-      
+
       expect(find.text('Upcoming (Next 7 Days)'), findsOneWidget);
       expect(find.text('Upcoming Test'), findsOneWidget);
     });
 
-    testWidgets('hides upcoming section when no upcoming deadlines', (tester) async {
+    testWidgets('hides upcoming section when no upcoming deadlines',
+        (tester) async {
       provider.addDeadline(Deadline(
         id: '1',
         title: 'Far Future',
@@ -188,13 +190,14 @@ void main() {
         dueDate: now.add(const Duration(days: 30)),
         createdAt: now,
       ));
-      
+
       await tester.pumpWidget(createTestWidget());
-      
+
       expect(find.text('Upcoming (Next 7 Days)'), findsNothing);
     });
 
-    testWidgets('shows recent activity section when recent deadlines exist', (tester) async {
+    testWidgets('shows recent activity section when recent deadlines exist',
+        (tester) async {
       provider.addDeadline(Deadline(
         id: '1',
         title: 'Recent Deadline',
@@ -202,15 +205,15 @@ void main() {
         dueDate: now.add(const Duration(days: 1)),
         createdAt: now.subtract(const Duration(days: 1)),
       ));
-      
+
       await tester.pumpWidget(createTestWidget());
-      
+
       await tester.dragUntilVisible(
         find.text('Recent Activity (Last 7 Days)'),
         find.byType(SingleChildScrollView),
         const Offset(0, -400),
       );
-      
+
       expect(find.text('Recent Activity (Last 7 Days)'), findsOneWidget);
     });
 
@@ -223,7 +226,7 @@ void main() {
         dueDate: now.add(const Duration(hours: 12)),
         createdAt: now,
       ));
-      
+
       // Add non-critical deadline
       provider.addDeadline(Deadline(
         id: '2',
@@ -232,16 +235,16 @@ void main() {
         dueDate: now.add(const Duration(days: 5)),
         createdAt: now,
       ));
-      
+
       await tester.pumpWidget(createTestWidget());
-      
+
       // Find the Critical card
       await tester.dragUntilVisible(
         find.text('Critical'),
         find.byType(SingleChildScrollView),
         const Offset(0, -100),
       );
-      
+
       expect(find.text('1'), findsAtLeastNWidgets(1));
     });
 
@@ -253,15 +256,15 @@ void main() {
         dueDate: now.add(const Duration(days: 1)),
         createdAt: now,
       ));
-      
+
       await tester.pumpWidget(createTestWidget());
-      
+
       await tester.dragUntilVisible(
         find.text('Status Distribution'),
         find.byType(SingleChildScrollView),
         const Offset(0, -200),
       );
-      
+
       // Should show 100% active
       expect(find.textContaining('%'), findsAtLeastNWidgets(1));
     });
@@ -281,9 +284,9 @@ void main() {
         dueDate: now.subtract(const Duration(days: 1)),
         createdAt: now,
       ));
-      
+
       await tester.pumpWidget(createTestWidget());
-      
+
       expect(find.text('2'), findsAtLeastNWidgets(1)); // Total
     });
 
@@ -298,15 +301,15 @@ void main() {
           createdAt: now,
         ));
       }
-      
+
       await tester.pumpWidget(createTestWidget());
-      
+
       await tester.dragUntilVisible(
         find.text('Upcoming (Next 7 Days)'),
         find.byType(SingleChildScrollView),
         const Offset(0, -400),
       );
-      
+
       // Should show max 5
       expect(find.text('Upcoming 1'), findsOneWidget);
       expect(find.text('Upcoming 5'), findsOneWidget);
@@ -322,9 +325,9 @@ void main() {
         dueDate: now.add(const Duration(days: 1)),
         createdAt: now,
       ));
-      
+
       await tester.pumpWidget(createTestWidget());
-      
+
       expect(find.byIcon(Icons.list_alt), findsOneWidget);
       expect(find.byIcon(Icons.check_circle), findsOneWidget);
       expect(find.byIcon(Icons.warning), findsOneWidget);
@@ -339,10 +342,11 @@ void main() {
         dueDate: now.add(const Duration(days: 1)),
         createdAt: now,
       ));
-      
+
       await tester.pumpWidget(createTestWidget());
-      
-      expect(find.byType(Card), findsAtLeastNWidgets(4)); // At least the 4 stat cards
+
+      expect(find.byType(Card),
+          findsAtLeastNWidgets(4)); // At least the 4 stat cards
     });
   });
 }

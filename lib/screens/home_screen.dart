@@ -48,7 +48,8 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         elevation: 0,
       ),
-      body: _selectedIndex == 0 ? _buildDeadlinesTab() : const StatisticsScreen(),
+      body:
+          _selectedIndex == 0 ? _buildDeadlinesTab() : const StatisticsScreen(),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
         onDestinationSelected: _onItemTapped,
@@ -213,7 +214,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             deadline.remainingTimeString,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: isOverdue ? Colors.red[700] : Colors.green[700],
+                              color: isOverdue
+                                  ? Colors.red[700]
+                                  : Colors.green[700],
                             ),
                           ),
                         ),
@@ -233,7 +236,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         IconButton(
                           icon: const Icon(Icons.delete, color: Colors.red),
                           onPressed: () {
-                            _showDeleteConfirmation(context, deadline, provider);
+                            _showDeleteConfirmation(
+                                context, deadline, provider);
                           },
                         ),
                       ),

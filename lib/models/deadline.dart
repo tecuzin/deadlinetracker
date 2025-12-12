@@ -21,7 +21,7 @@ class Deadline {
   // Get remaining time as a human-readable string
   String get remainingTimeString {
     final duration = remainingTime;
-    
+
     if (duration.isNegative) {
       final absDuration = duration.abs();
       if (absDuration.inDays > 0) {
@@ -34,7 +34,7 @@ class Deadline {
         return 'Just overdue';
       }
     }
-    
+
     if (duration.inDays > 0) {
       final hours = duration.inHours % 24;
       return '${duration.inDays}d ${hours}h';

@@ -58,21 +58,23 @@ class StatisticsScreen extends StatelessWidget {
                 // Overview Cards
                 _buildOverviewSection(context, stats),
                 const SizedBox(height: 20),
-                
+
                 // Status Distribution
                 _buildStatusDistribution(context, stats),
                 const SizedBox(height: 20),
-                
+
                 // Time Analysis
                 _buildTimeAnalysis(context, stats),
                 const SizedBox(height: 20),
-                
+
                 // Upcoming Deadlines
-                _buildUpcomingDeadlines(context, stats['upcomingDeadlines'] as List<Deadline>),
+                _buildUpcomingDeadlines(
+                    context, stats['upcomingDeadlines'] as List<Deadline>),
                 const SizedBox(height: 20),
-                
+
                 // Recent Activity
-                _buildRecentActivity(context, stats['recentDeadlines'] as List<Deadline>),
+                _buildRecentActivity(
+                    context, stats['recentDeadlines'] as List<Deadline>),
               ],
             ),
           );
@@ -85,22 +87,22 @@ class StatisticsScreen extends StatelessWidget {
     final now = DateTime.now();
     final activeDeadlines = deadlines.where((d) => !d.isOverdue).toList();
     final overdueDeadlines = deadlines.where((d) => d.isOverdue).toList();
-    
+
     // Upcoming deadlines (within next 7 days)
     final upcomingDeadlines = activeDeadlines
         .where((d) => d.dueDate.difference(now).inDays <= 7)
         .toList();
-    
+
     // Critical deadlines (within next 24 hours)
     final criticalDeadlines = activeDeadlines
         .where((d) => d.dueDate.difference(now).inHours <= 24)
         .toList();
-    
+
     // Recent deadlines (created in last 7 days)
     final recentDeadlines = deadlines
         .where((d) => now.difference(d.createdAt).inDays <= 7)
         .toList();
-    
+
     // Average time remaining for active deadlines
     double avgTimeRemaining = 0;
     if (activeDeadlines.isNotEmpty) {
@@ -124,7 +126,8 @@ class StatisticsScreen extends StatelessWidget {
     };
   }
 
-  Widget _buildOverviewSection(BuildContext context, Map<String, dynamic> stats) {
+  Widget _buildOverviewSection(
+      BuildContext context, Map<String, dynamic> stats) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -221,7 +224,8 @@ class StatisticsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildStatusDistribution(BuildContext context, Map<String, dynamic> stats) {
+  Widget _buildStatusDistribution(
+      BuildContext context, Map<String, dynamic> stats) {
     final total = stats['total'] as int;
     final active = stats['active'] as int;
     final overdue = stats['overdue'] as int;
@@ -399,7 +403,8 @@ class StatisticsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildUpcomingDeadlines(BuildContext context, List<Deadline> deadlines) {
+  Widget _buildUpcomingDeadlines(
+      BuildContext context, List<Deadline> deadlines) {
     if (deadlines.isEmpty) {
       return const SizedBox.shrink();
     }
@@ -413,7 +418,8 @@ class StatisticsScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.upcoming, color: Theme.of(context).colorScheme.primary),
+                Icon(Icons.upcoming,
+                    color: Theme.of(context).colorScheme.primary),
                 const SizedBox(width: 8),
                 Text(
                   'Upcoming (Next 7 Days)',
@@ -502,7 +508,8 @@ class StatisticsScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.history, color: Theme.of(context).colorScheme.primary),
+                Icon(Icons.history,
+                    color: Theme.of(context).colorScheme.primary),
                 const SizedBox(width: 8),
                 Text(
                   'Recent Activity (Last 7 Days)',
@@ -525,7 +532,7 @@ class StatisticsScreen extends StatelessWidget {
               final dateFormat = DateFormat('MMM dd');
               final now = DateTime.now();
               final daysAgo = now.difference(deadline.createdAt).inDays;
-              
+
               return Padding(
                 padding: const EdgeInsets.only(bottom: 6),
                 child: Row(

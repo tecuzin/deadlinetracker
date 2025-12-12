@@ -7,7 +7,8 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   group('End-to-End Tests', () {
-    testWidgets('Complete user journey: Add, view, and delete deadline', (tester) async {
+    testWidgets('Complete user journey: Add, view, and delete deadline',
+        (tester) async {
       await tester.pumpWidget(const MyApp());
       await tester.pumpAndSettle();
 
@@ -23,12 +24,14 @@ void main() {
       expect(find.text('Add New Deadline'), findsOneWidget);
 
       // Fill in deadline information
-      final titleField = find.widgetWithText(TextFormField, 'Enter deadline title');
-      final descriptionField = find.widgetWithText(TextFormField, 'Enter deadline description');
+      final titleField =
+          find.widgetWithText(TextFormField, 'Enter deadline title');
+      final descriptionField =
+          find.widgetWithText(TextFormField, 'Enter deadline description');
 
       await tester.enterText(titleField, 'E2E Test Deadline');
       await tester.pumpAndSettle();
-      
+
       await tester.enterText(descriptionField, 'Testing the complete flow');
       await tester.pumpAndSettle();
 
@@ -63,7 +66,8 @@ void main() {
 
       // Verify delete confirmation dialog
       expect(find.text('Delete Deadline'), findsOneWidget);
-      expect(find.text('Are you sure you want to delete "E2E Test Deadline"?'), findsOneWidget);
+      expect(find.text('Are you sure you want to delete "E2E Test Deadline"?'),
+          findsOneWidget);
 
       // Confirm deletion
       await tester.tap(find.text('Delete'));
@@ -74,7 +78,8 @@ void main() {
       expect(find.text('E2E Test Deadline'), findsNothing);
     });
 
-    testWidgets('Validation prevents saving incomplete deadline', (tester) async {
+    testWidgets('Validation prevents saving incomplete deadline',
+        (tester) async {
       await tester.pumpWidget(const MyApp());
       await tester.pumpAndSettle();
 
@@ -190,7 +195,7 @@ void main() {
       await tester.tap(find.text('Date'));
       await tester.pumpAndSettle();
       expect(find.byType(DatePickerDialog), findsOneWidget);
-      
+
       // Close date picker
       await tester.tap(find.text('OK'));
       await tester.pumpAndSettle();
@@ -199,7 +204,7 @@ void main() {
       await tester.tap(find.text('Time'));
       await tester.pumpAndSettle();
       expect(find.byType(TimePickerDialog), findsOneWidget);
-      
+
       // Close time picker
       await tester.tap(find.text('OK'));
       await tester.pumpAndSettle();
@@ -231,13 +236,13 @@ void main() {
       // Switch tabs multiple times
       await tester.tap(find.text('Statistics'));
       await tester.pumpAndSettle(const Duration(seconds: 1));
-      
+
       await tester.tap(find.text('Deadlines'));
       await tester.pumpAndSettle(const Duration(seconds: 1));
-      
+
       await tester.tap(find.text('Statistics'));
       await tester.pumpAndSettle(const Duration(seconds: 1));
-      
+
       await tester.tap(find.text('Deadlines'));
       await tester.pumpAndSettle(const Duration(seconds: 1));
 

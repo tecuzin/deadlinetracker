@@ -13,7 +13,7 @@ void main() {
     setUp(() {
       provider = DeadlineProvider();
       now = DateTime(2025, 12, 12, 12, 0, 0);
-      
+
       deadline1 = Deadline(
         id: '1',
         title: 'First Deadline',
@@ -54,7 +54,7 @@ void main() {
         provider.addDeadline(deadline1);
         provider.addDeadline(deadline2);
         provider.addDeadline(deadline3);
-        
+
         expect(provider.deadlines.length, 3);
       });
 
@@ -160,7 +160,7 @@ void main() {
 
       test('maintains list length when updating', () {
         final initialLength = provider.deadlines.length;
-        
+
         final updated = Deadline(
           id: '1',
           title: 'Updated',
@@ -182,7 +182,7 @@ void main() {
         provider.addDeadline(deadline3); // day 2
 
         final deadlines = provider.deadlines;
-        
+
         expect(deadlines[0].id, '1'); // day 1
         expect(deadlines[1].id, '3'); // day 2
         expect(deadlines[2].id, '2'); // day 3
@@ -191,7 +191,7 @@ void main() {
       test('maintains sort order after adding new deadline', () {
         provider.addDeadline(deadline2); // day 3
         provider.addDeadline(deadline1); // day 1
-        
+
         final newDeadline = Deadline(
           id: '4',
           title: 'Earliest',
@@ -199,9 +199,9 @@ void main() {
           dueDate: now.add(const Duration(hours: 12)),
           createdAt: now,
         );
-        
+
         provider.addDeadline(newDeadline);
-        
+
         final deadlines = provider.deadlines;
         expect(deadlines.first.id, '4'); // Earliest deadline
       });
@@ -216,14 +216,14 @@ void main() {
       test('handles adding same id multiple times', () {
         provider.addDeadline(deadline1);
         provider.addDeadline(deadline1);
-        
+
         // Should add both (no deduplication in current implementation)
         expect(provider.deadlines.length, 2);
       });
 
       test('deadlines with same due date maintain stable order', () {
         final sameTime = now.add(const Duration(days: 1));
-        
+
         final d1 = Deadline(
           id: '1',
           title: 'First',
@@ -231,7 +231,7 @@ void main() {
           dueDate: sameTime,
           createdAt: now,
         );
-        
+
         final d2 = Deadline(
           id: '2',
           title: 'Second',
@@ -239,10 +239,10 @@ void main() {
           dueDate: sameTime,
           createdAt: now,
         );
-        
+
         provider.addDeadline(d1);
         provider.addDeadline(d2);
-        
+
         expect(provider.deadlines.length, 2);
       });
     });
