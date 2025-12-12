@@ -39,16 +39,20 @@ void main() {
     testWidgets('shows title input field', (tester) async {
       await tester.pumpWidget(createTestWidget());
 
-      expect(find.widgetWithText(TextFormField, 'Enter deadline title'),
-          findsOneWidget,);
+      expect(
+        find.widgetWithText(TextFormField, 'Enter deadline title'),
+        findsOneWidget,
+      );
       expect(find.byIcon(Icons.title), findsOneWidget);
     });
 
     testWidgets('shows description input field', (tester) async {
       await tester.pumpWidget(createTestWidget());
 
-      expect(find.widgetWithText(TextFormField, 'Enter deadline description'),
-          findsOneWidget,);
+      expect(
+        find.widgetWithText(TextFormField, 'Enter deadline description'),
+        findsOneWidget,
+      );
       expect(find.byIcon(Icons.description), findsOneWidget);
     });
 
@@ -70,7 +74,9 @@ void main() {
       await tester.pumpWidget(createTestWidget());
 
       expect(
-          find.widgetWithText(ElevatedButton, 'Save Deadline'), findsOneWidget,);
+        find.widgetWithText(ElevatedButton, 'Save Deadline'),
+        findsOneWidget,
+      );
     });
 
     testWidgets('validates empty title field', (tester) async {
@@ -171,8 +177,8 @@ void main() {
 
       final descriptionFieldFinder =
           find.widgetWithText(TextFormField, 'Enter deadline description');
-      final textFieldFinder =
-          find.descendant(of: descriptionFieldFinder, matching: find.byType(TextField));
+      final textFieldFinder = find.descendant(
+          of: descriptionFieldFinder, matching: find.byType(TextField));
       final textField = tester.widget<TextField>(textFieldFinder);
 
       expect(textField.maxLines, 3);
@@ -227,13 +233,14 @@ void main() {
 
       final deadline = provider.deadlines.first;
       expect(
-          deadline.createdAt
-              .isAfter(beforeTime.subtract(const Duration(seconds: 1))),
-          true,);
+        deadline.createdAt
+            .isAfter(beforeTime.subtract(const Duration(seconds: 1))),
+        true,
+      );
       expect(
-          deadline.createdAt
-              .isBefore(afterTime.add(const Duration(seconds: 1))),
-          true,);
+        deadline.createdAt.isBefore(afterTime.add(const Duration(seconds: 1))),
+        true,
+      );
     });
 
     testWidgets('generates unique id for each deadline', (tester) async {

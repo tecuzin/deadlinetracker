@@ -237,7 +237,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           icon: const Icon(Icons.delete, color: Colors.red),
                           onPressed: () {
                             _showDeleteConfirmation(
-                                context, deadline, provider,);
+                              context,
+                              deadline,
+                              provider,
+                            );
                           },
                         ),
                       ),
