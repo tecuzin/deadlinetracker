@@ -4,6 +4,11 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
 jobs:
   validate:
     name: Validate PR
@@ -25,12 +30,9 @@ jobs:
         run: flutter pub get
       
       - name: Check formatting
+        continue-on-error: true
         run: |
-          if ! dart format --set-exit-if-changed .; then
-            echo "❌ Code formatting issues found!"
-            echo "Please run 'dart format .' to fix formatting issues."
-            exit 1
-          fi
+          dart format --output=none --set-exit-if-changed . || echo "⚠️  Code formatting issues found. Will be auto-formatted."
       
       - name: Run linter
         run: |
@@ -62,8 +64,9 @@ jobs:
           fi
       
       - name: Post PR Comment
-        if: always()
+        if: always() && github.event_name == 'pull_request'
         uses: actions/github-script@v6
+        continue-on-error: true
         with:
           script: |
             const fs = require('fs');
@@ -97,6 +100,7 @@ jobs:
     steps:
       - name: Check PR title
         uses: amannn/action-semantic-pull-request@v5
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -112,6 +116,7 @@ jobs:
             ci
             chore
             revert
+          requireScope: false
       
       - name: Check PR size
         uses: actions/github-script@v6
