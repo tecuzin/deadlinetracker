@@ -60,20 +60,24 @@ void main() {
     });
 
     testWidgets('shows correct total count', (tester) async {
-      provider.addDeadline(Deadline(
-        id: '1',
-        title: 'Test 1',
-        description: 'Test',
-        dueDate: now.add(const Duration(days: 1)),
-        createdAt: now,
-      ));
-      provider.addDeadline(Deadline(
-        id: '2',
-        title: 'Test 2',
-        description: 'Test',
-        dueDate: now.add(const Duration(days: 2)),
-        createdAt: now,
-      ));
+      provider.addDeadline(
+        Deadline(
+          id: '1',
+          title: 'Test 1',
+          description: 'Test',
+          dueDate: now.add(const Duration(days: 1)),
+          createdAt: now,
+        ),
+      );
+      provider.addDeadline(
+        Deadline(
+          id: '2',
+          title: 'Test 2',
+          description: 'Test',
+          dueDate: now.add(const Duration(days: 2)),
+          createdAt: now,
+        ),
+      );
 
       await tester.pumpWidget(createTestWidget());
 
@@ -81,13 +85,15 @@ void main() {
     });
 
     testWidgets('shows correct active count', (tester) async {
-      provider.addDeadline(Deadline(
-        id: '1',
-        title: 'Active',
-        description: 'Test',
-        dueDate: now.add(const Duration(days: 1)),
-        createdAt: now,
-      ));
+      provider.addDeadline(
+        Deadline(
+          id: '1',
+          title: 'Active',
+          description: 'Test',
+          dueDate: now.add(const Duration(days: 1)),
+          createdAt: now,
+        ),
+      );
 
       await tester.pumpWidget(createTestWidget());
 
@@ -95,13 +101,15 @@ void main() {
     });
 
     testWidgets('shows correct overdue count', (tester) async {
-      provider.addDeadline(Deadline(
-        id: '1',
-        title: 'Overdue',
-        description: 'Test',
-        dueDate: now.subtract(const Duration(days: 1)),
-        createdAt: now,
-      ));
+      provider.addDeadline(
+        Deadline(
+          id: '1',
+          title: 'Overdue',
+          description: 'Test',
+          dueDate: now.subtract(const Duration(days: 1)),
+          createdAt: now,
+        ),
+      );
 
       await tester.pumpWidget(createTestWidget());
 
@@ -116,13 +124,15 @@ void main() {
     });
 
     testWidgets('displays status distribution section', (tester) async {
-      provider.addDeadline(Deadline(
-        id: '1',
-        title: 'Test',
-        description: 'Test',
-        dueDate: now.add(const Duration(days: 1)),
-        createdAt: now,
-      ));
+      provider.addDeadline(
+        Deadline(
+          id: '1',
+          title: 'Test',
+          description: 'Test',
+          dueDate: now.add(const Duration(days: 1)),
+          createdAt: now,
+        ),
+      );
 
       await tester.pumpWidget(createTestWidget());
 
@@ -138,13 +148,15 @@ void main() {
     });
 
     testWidgets('displays time analysis section', (tester) async {
-      provider.addDeadline(Deadline(
-        id: '1',
-        title: 'Test',
-        description: 'Test',
-        dueDate: now.add(const Duration(days: 1)),
-        createdAt: now,
-      ));
+      provider.addDeadline(
+        Deadline(
+          id: '1',
+          title: 'Test',
+          description: 'Test',
+          dueDate: now.add(const Duration(days: 1)),
+          createdAt: now,
+        ),
+      );
 
       await tester.pumpWidget(createTestWidget());
 
@@ -161,13 +173,15 @@ void main() {
 
     testWidgets('shows upcoming deadlines section when deadlines exist',
         (tester) async {
-      provider.addDeadline(Deadline(
-        id: '1',
-        title: 'Upcoming Test',
-        description: 'Test',
-        dueDate: now.add(const Duration(days: 2)),
-        createdAt: now,
-      ));
+      provider.addDeadline(
+        Deadline(
+          id: '1',
+          title: 'Upcoming Test',
+          description: 'Test',
+          dueDate: now.add(const Duration(days: 2)),
+          createdAt: now,
+        ),
+      );
 
       await tester.pumpWidget(createTestWidget());
 
@@ -183,13 +197,15 @@ void main() {
 
     testWidgets('hides upcoming section when no upcoming deadlines',
         (tester) async {
-      provider.addDeadline(Deadline(
-        id: '1',
-        title: 'Far Future',
-        description: 'Test',
-        dueDate: now.add(const Duration(days: 30)),
-        createdAt: now,
-      ));
+      provider.addDeadline(
+        Deadline(
+          id: '1',
+          title: 'Far Future',
+          description: 'Test',
+          dueDate: now.add(const Duration(days: 30)),
+          createdAt: now,
+        ),
+      );
 
       await tester.pumpWidget(createTestWidget());
 
@@ -198,13 +214,15 @@ void main() {
 
     testWidgets('shows recent activity section when recent deadlines exist',
         (tester) async {
-      provider.addDeadline(Deadline(
-        id: '1',
-        title: 'Recent Deadline',
-        description: 'Test',
-        dueDate: now.add(const Duration(days: 1)),
-        createdAt: now.subtract(const Duration(days: 1)),
-      ));
+      provider.addDeadline(
+        Deadline(
+          id: '1',
+          title: 'Recent Deadline',
+          description: 'Test',
+          dueDate: now.add(const Duration(days: 1)),
+          createdAt: now.subtract(const Duration(days: 1)),
+        ),
+      );
 
       await tester.pumpWidget(createTestWidget());
 
@@ -219,22 +237,26 @@ void main() {
 
     testWidgets('calculates critical deadlines correctly', (tester) async {
       // Add critical deadline (within 24 hours)
-      provider.addDeadline(Deadline(
-        id: '1',
-        title: 'Critical',
-        description: 'Test',
-        dueDate: now.add(const Duration(hours: 12)),
-        createdAt: now,
-      ));
+      provider.addDeadline(
+        Deadline(
+          id: '1',
+          title: 'Critical',
+          description: 'Test',
+          dueDate: now.add(const Duration(hours: 12)),
+          createdAt: now,
+        ),
+      );
 
       // Add non-critical deadline
-      provider.addDeadline(Deadline(
-        id: '2',
-        title: 'Not Critical',
-        description: 'Test',
-        dueDate: now.add(const Duration(days: 5)),
-        createdAt: now,
-      ));
+      provider.addDeadline(
+        Deadline(
+          id: '2',
+          title: 'Not Critical',
+          description: 'Test',
+          dueDate: now.add(const Duration(days: 5)),
+          createdAt: now,
+        ),
+      );
 
       await tester.pumpWidget(createTestWidget());
 
@@ -249,13 +271,15 @@ void main() {
     });
 
     testWidgets('shows percentage in status distribution', (tester) async {
-      provider.addDeadline(Deadline(
-        id: '1',
-        title: 'Active',
-        description: 'Test',
-        dueDate: now.add(const Duration(days: 1)),
-        createdAt: now,
-      ));
+      provider.addDeadline(
+        Deadline(
+          id: '1',
+          title: 'Active',
+          description: 'Test',
+          dueDate: now.add(const Duration(days: 1)),
+          createdAt: now,
+        ),
+      );
 
       await tester.pumpWidget(createTestWidget());
 
@@ -270,20 +294,24 @@ void main() {
     });
 
     testWidgets('handles mixed active and overdue deadlines', (tester) async {
-      provider.addDeadline(Deadline(
-        id: '1',
-        title: 'Active',
-        description: 'Test',
-        dueDate: now.add(const Duration(days: 1)),
-        createdAt: now,
-      ));
-      provider.addDeadline(Deadline(
-        id: '2',
-        title: 'Overdue',
-        description: 'Test',
-        dueDate: now.subtract(const Duration(days: 1)),
-        createdAt: now,
-      ));
+      provider.addDeadline(
+        Deadline(
+          id: '1',
+          title: 'Active',
+          description: 'Test',
+          dueDate: now.add(const Duration(days: 1)),
+          createdAt: now,
+        ),
+      );
+      provider.addDeadline(
+        Deadline(
+          id: '2',
+          title: 'Overdue',
+          description: 'Test',
+          dueDate: now.subtract(const Duration(days: 1)),
+          createdAt: now,
+        ),
+      );
 
       await tester.pumpWidget(createTestWidget());
 
@@ -293,13 +321,15 @@ void main() {
     testWidgets('limits upcoming deadlines display to 5', (tester) async {
       // Add 7 upcoming deadlines
       for (int i = 1; i <= 7; i++) {
-        provider.addDeadline(Deadline(
-          id: '$i',
-          title: 'Upcoming $i',
-          description: 'Test',
-          dueDate: now.add(Duration(days: i)),
-          createdAt: now,
-        ));
+        provider.addDeadline(
+          Deadline(
+            id: '$i',
+            title: 'Upcoming $i',
+            description: 'Test',
+            dueDate: now.add(Duration(days: i)),
+            createdAt: now,
+          ),
+        );
       }
 
       await tester.pumpWidget(createTestWidget());
@@ -318,13 +348,15 @@ void main() {
     });
 
     testWidgets('shows correct icons for each section', (tester) async {
-      provider.addDeadline(Deadline(
-        id: '1',
-        title: 'Test',
-        description: 'Test',
-        dueDate: now.add(const Duration(days: 1)),
-        createdAt: now,
-      ));
+      provider.addDeadline(
+        Deadline(
+          id: '1',
+          title: 'Test',
+          description: 'Test',
+          dueDate: now.add(const Duration(days: 1)),
+          createdAt: now,
+        ),
+      );
 
       await tester.pumpWidget(createTestWidget());
 
@@ -335,18 +367,22 @@ void main() {
     });
 
     testWidgets('displays all cards in overview section', (tester) async {
-      provider.addDeadline(Deadline(
-        id: '1',
-        title: 'Test',
-        description: 'Test',
-        dueDate: now.add(const Duration(days: 1)),
-        createdAt: now,
-      ));
+      provider.addDeadline(
+        Deadline(
+          id: '1',
+          title: 'Test',
+          description: 'Test',
+          dueDate: now.add(const Duration(days: 1)),
+          createdAt: now,
+        ),
+      );
 
       await tester.pumpWidget(createTestWidget());
 
-      expect(find.byType(Card),
-          findsAtLeastNWidgets(4)); // At least the 4 stat cards
+      expect(
+        find.byType(Card),
+        findsAtLeastNWidgets(4),
+      ); // At least the 4 stat cards
     });
   });
 }
